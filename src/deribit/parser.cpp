@@ -4,6 +4,7 @@
 // or copy at http://www.boost.org/LICENSE_1_0.txt
 
 #include "parser.hpp"
+#include <fmt/core.h>
 #include <iostream>
 #include <rapidjson/document.h>
 
@@ -16,23 +17,25 @@ DeribitParser::DeribitParser()
 bool DeribitParser::parse(const char *message)
 {
   if (message[0] == char(0)) {
+    last_error_msg_ = "Empty string.";
     return false;
   }
 
   using namespace rapidjson;
   rapidjson::Document doc;
   doc.Parse(message);
-  if (doc.IsNull()){
-      return false;
+  if (doc.IsNull()) {
+    last_error_msg_ = "Unable to parse the message, probably the wrong JSON format.";
+    return false;
   }
 
+  bool processed = false;
   if (doc.HasMember("method")) {
     auto method = doc["method"].GetString();
     auto &params = doc["params"];
     if (strcmp(method, "subscription") == 0) {
       auto &data = params["data"];
       auto channel = params["channel"].GetString();
-      bool processed = false;
 
       switch (channel[0]) {
       case 'a': {
@@ -99,16 +102,16 @@ bool DeribitParser::parse(const char *message)
       }
 
       if (!processed) {
-        std::cout << "DeribitParser Unknown channel: " << channel << " in message: " << message << '\n';
+        last_error_msg_ = fmt::format("DeribitParser Unsupported: {} in message: {}", channel, message);
       }
     } else {
-      std::cout << "DeribitParser Unknown method: " << method << " in message: " << message << '\n';
+      last_error_msg_ = fmt::format("DeribitParser Unknown method: {} in message: {}", method, message);
     }
   } else {
-    std::cout << "DeribitParser Unknown message format: " << message << '\n';
+    last_error_msg_ = fmt::format("DeribitParser Unknown message format: {}", message);
   }
 
-  return true;
+  return processed;
 }
 
 } // namespace ssc2ce

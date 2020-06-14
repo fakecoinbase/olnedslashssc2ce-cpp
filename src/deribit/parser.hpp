@@ -7,7 +7,7 @@
 #include <common/parser.hpp>
 // #include <functional>
 // #include <map>
-// #include <string>
+#include <string>
 
 namespace ssc2ce {
 
@@ -17,8 +17,17 @@ public:
   ~DeribitParser() {}
 
   bool parse(const char *message) override;
+  
+  std::string last_error_msg() const {
+      return last_error_msg_;
+  }
+
+  void reset_error() {
+      last_error_msg_.clear();
+  }
 
 private:
+    std::string last_error_msg_;
 //   using ParseChannel = std::function<bool(const char *)>;
 //   std::map<std::string, ParseChannel> channels_;
 };
