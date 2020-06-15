@@ -152,6 +152,8 @@ bool DeribitParser::parse_book(const char *channel, const rapidjson::Value &data
     }
 
     result = true;
+    if (on_book_setup_)
+      on_book_setup_(&book);
   } else {
     // Update book
     const auto update_side = [&](BookL2Map::BookSide &side, const rapidjson::Value &side_data) {
@@ -169,13 +171,16 @@ bool DeribitParser::parse_book(const char *channel, const rapidjson::Value &data
           break;
         default:
           last_error_msg_ = fmt::format("DeribitParser::parse_book Channel {} unknown action", channel, action);
-          return true;
+          return false;
         }
       }
       return true;
     };
 
     result = update_side(book.asks_, data["asks"]) && update_side(book.bids_, data["bids"]);
+    if (result && on_book_update_) {
+      on_book_update_(&book);
+    }
   }
 
   return result;
