@@ -9,19 +9,19 @@ TEST_CASE("Deribit parser, wrong messages", "[deribit-wrong]")
   SECTION("empty string")
   {
     REQUIRE_FALSE(parser.parse(""));
-    // REQUIRE(parser.last_error_msg() == "Empty string.");
+    REQUIRE(parser.last_error_msg() == "Empty string.");
   }
 
   SECTION("wrong format")
   {
     REQUIRE_FALSE(parser.parse("["));
-    // REQUIRE(parser.last_error_msg() == "Unable to parse the message, probably the wrong JSON format.");
+    REQUIRE(parser.last_error_msg() == "Unable to parse the message, probably the wrong JSON format.");
   }
 
   SECTION("Unknown message format")
   {
     REQUIRE_FALSE(parser.parse("{}"));
-    // REQUIRE(parser.last_error_msg() == "DeribitParser Unknown message format: {}");
+    REQUIRE(parser.last_error_msg() == "DeribitParser Unknown message format: {}");
   }
 }
 

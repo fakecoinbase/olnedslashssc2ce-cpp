@@ -18,13 +18,10 @@ add_executable(
     deribit_parser_test.cpp
 )
 
-# find_package(fmt)
-
 
 target_link_libraries(
     deribit_parser_test
     ssc2ce
-    # fmt::fmt
 )
 
 add_test(NAME deribit_parser_test COMMAND deribit_parser_test)
