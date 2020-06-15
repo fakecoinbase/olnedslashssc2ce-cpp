@@ -4,7 +4,7 @@
 // or copy at http://www.boost.org/LICENSE_1_0.txt
 
 #include "parser.hpp"
-#include <fmt/core.h>
+// #include <fmt/core.h>
 #include <iostream>
 #include <rapidjson/document.h>
 
@@ -103,13 +103,13 @@ bool DeribitParser::parse(const char *message)
       }
 
       if (!processed) {
-        last_error_msg_ = fmt::format("DeribitParser Unsupported: {} in message: {}", channel, message);
+        // last_error_msg_ = fmt::format("DeribitParser Unsupported: {} in message: {}", channel, message);
       }
     } else {
-      last_error_msg_ = fmt::format("DeribitParser Unknown method: {} in message: {}", method, message);
+      // last_error_msg_ = fmt::format("DeribitParser Unknown method: {} in message: {}", method, message);
     }
   } else {
-    last_error_msg_ = fmt::format("DeribitParser Unknown message format: {}", message);
+    // last_error_msg_ = fmt::format("DeribitParser Unknown message format: {}", message);
   }
 
   return processed;
@@ -123,12 +123,12 @@ bool DeribitParser::parse_book(const char *channel, const rapidjson::Value &data
   const char *pos = channel + 5;
   const char *next_poit = std::strchr(pos, point);
   if (!next_poit) {
-    last_error_msg_ = fmt::format("DeribitParser Unknown channel format: {}", channel);
+    // last_error_msg_ = fmt::format("DeribitParser Unknown channel format: {}", channel);
     return false;
   }
 
   bool result = false;
-  std::string_view instrumnet(pos, next_poit - pos);
+  std::string instrumnet(pos, next_poit - pos);
   auto &book = books_[instrumnet];
   const int64_t change_id = data["change_id"].GetInt64();
 
@@ -168,7 +168,7 @@ bool DeribitParser::parse_book(const char *channel, const rapidjson::Value &data
           side.remove(item[1].GetDouble());
           break;
         default:
-          last_error_msg_ = fmt::format("DeribitParser::parse_book Channel {} unknown action", channel, action);
+          // last_error_msg_ = fmt::format("DeribitParser::parse_book Channel {} unknown action", channel, action);
           return true;
         }
       }
@@ -179,7 +179,13 @@ bool DeribitParser::parse_book(const char *channel, const rapidjson::Value &data
   }
 
   return result;
-} // namespace ssc2ce
+}
+
+BookL2 const *DeribitParser::get_book(const std::string &instrument)
+{
+  BookL2 const *book = &books_[instrument];
+  return book;
+}
 
 // bool DeribitParser::parse_book(const char *channel, const rapidjson::Value &data)
 // {

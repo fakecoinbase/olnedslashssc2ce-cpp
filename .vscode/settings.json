@@ -75,5 +75,6 @@
         "valarray": "cpp",
         "variant": "cpp",
         "format": "cpp"
-    }
+    },
+    "python.pythonPath": "/home/olned/ons/ssc2ce-cpp/venv/bin/python3"
 }

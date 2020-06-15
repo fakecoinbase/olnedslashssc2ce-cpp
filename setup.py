@@ -79,7 +79,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='ssc2ce-cpp',
+    name='ssc2ce_cpp',
     version='0.0.1',
     author='Oleg Nedbaylo',
     author_email='olned64@gmail.com',

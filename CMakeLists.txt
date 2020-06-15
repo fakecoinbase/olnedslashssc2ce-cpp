@@ -13,9 +13,9 @@ include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/libs/include)
 include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/src)
 
 
-add_subdirectory(fmt)
-find_package(fmt)
-include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/fmt/include)
+# add_subdirectory(fmt)
+# find_package(fmt)
+# include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/fmt/include)
 
 add_subdirectory(src)
 add_subdirectory(pybind11)

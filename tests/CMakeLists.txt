@@ -24,7 +24,7 @@ add_executable(
 target_link_libraries(
     deribit_parser_test
     ssc2ce
-    fmt::fmt
+    # fmt::fmt
 )
 
 add_test(NAME deribit_parser_test COMMAND deribit_parser_test)
