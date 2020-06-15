@@ -31,11 +31,11 @@ bool DeribitParser::parse(const char *message)
 
   bool processed = false;
   if (doc.HasMember("method")) {
-    auto method = doc["method"].GetString();
-    auto &params = doc["params"];
+    const char *method = doc["method"].GetString();
+    const auto &params = doc["params"];
     if (strcmp(method, "subscription") == 0) {
-      auto &data = params["data"];
-      auto channel = params["channel"].GetString();
+      const auto &data = params["data"];
+      const char *channel = params["channel"].GetString();
 
       switch (channel[0]) {
       case 'a': {
@@ -44,6 +44,7 @@ bool DeribitParser::parse(const char *message)
       case 'b': {
         // book.{instrument_name}.{group}.{depth}.{interval} or
         // book.{instrument_name}.{interval}
+        return parse_book(channel, data);
       } break;
       case 'c': {
         // chart.trades.{instrument_name}.{resolution}
@@ -113,5 +114,79 @@ bool DeribitParser::parse(const char *message)
 
   return processed;
 }
+
+bool DeribitParser::parse_book(const char *channel, const rapidjson::Value &data)
+{
+  // book.{instrument_name}.{group}.{depth}.{interval} or
+  // book.{instrument_name}.{interval}
+  constexpr char point = '.';
+  const char *pos = channel + 5;
+  const char *next_poit = std::strchr(pos, point);
+  if (!next_poit) {
+    last_error_msg_ = fmt::format("DeribitParser Unknown channel format: {}", channel);
+    return false;
+  }
+
+  bool result = false;
+  std::string_view instrumnet(pos, next_poit - pos);
+  auto &book = books_[instrumnet];
+  const int64_t change_id = data["change_id"].GetInt64();
+
+  pos = next_poit + 1;
+  next_poit = std::strchr(pos, point);
+  if (next_poit ||                      // book.{instrument_name}.{group}.{depth}.{interval}
+      !data.HasMember("prev_change_id") // book.{instrument_name}.{interval} with snapshot
+  ) {
+    // Reset Book
+    book.clear();
+    book.set_last_change_id(change_id);
+
+    const auto &bids{data["bids"]};
+    for (const auto &item : bids.GetArray()) {
+      book.add_bid(item[1].GetDouble(), item[2].GetDouble());
+    }
+
+    const auto &asks{data["asks"]};
+    for (const auto &item : asks.GetArray()) {
+      book.add_ask(item[1].GetDouble(), item[2].GetDouble());
+    }
+
+    result = true;
+  } else {
+    // Update book
+    const auto update_side = [&](BookL2Map::BookSide &side, const rapidjson::Value &side_data) {
+      for (const auto &item : side_data.GetArray()) {
+        auto action = item[0].GetString();
+        switch (action[0]) {
+        case 'c': // change
+          side.update(item[1].GetDouble(), item[2].GetDouble());
+          break;
+        case 'n': // new
+          side.add(item[1].GetDouble(), item[2].GetDouble());
+          break;
+        case 'd': // delete
+          side.remove(item[1].GetDouble());
+          break;
+        default:
+          last_error_msg_ = fmt::format("DeribitParser::parse_book Channel {} unknown action", channel, action);
+          return true;
+        }
+      }
+      return true;
+    };
+
+    result = update_side(book.asks_, data["asks"]) && update_side(book.bids_, data["bids"]);
+  }
+
+  return result;
+} // namespace ssc2ce
+
+// bool DeribitParser::parse_book(const char *channel, const rapidjson::Value &data)
+// {
+//   // book.{instrument_name}.{group}.{depth}.{interval} or
+//   // book.{instrument_name}.{interval}
+//   last_error_msg_ = fmt::format("DeribitParser::parse_book Channel {} message processing not yet implemented", channel);
+//   return false;
+// }
 
 } // namespace ssc2ce

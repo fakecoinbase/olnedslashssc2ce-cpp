@@ -7,7 +7,9 @@
 #include <common/parser.hpp>
 // #include <functional>
 // #include <map>
-#include <string>
+#include "book_l2.hpp"
+#include <rapidjson/document.h>
+#include <string_view>
 
 namespace ssc2ce {
 
@@ -17,19 +19,28 @@ public:
   ~DeribitParser() {}
 
   bool parse(const char *message) override;
-  
-  std::string last_error_msg() const {
-      return last_error_msg_;
+
+  std::string last_error_msg() const
+  {
+    return last_error_msg_;
   }
 
-  void reset_error() {
-      last_error_msg_.clear();
+  void reset_error()
+  {
+    last_error_msg_.clear();
+  }
+
+  const DeribitBookL2 &get_book(const std::string_view &instrument)
+  {
+    return books_[instrument];
   }
 
 private:
-    std::string last_error_msg_;
-//   using ParseChannel = std::function<bool(const char *)>;
-//   std::map<std::string, ParseChannel> channels_;
+  std::string last_error_msg_;
+
+  bool parse_book(const char *channel, const rapidjson::Value &data);
+  //   using ParseChannel = std::function<bool(const char *)>;
+  std::map<std::string_view, DeribitBookL2> books_;
 };
 
 } // namespace ssc2ce
