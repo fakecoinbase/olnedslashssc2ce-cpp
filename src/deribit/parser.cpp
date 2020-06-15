@@ -128,7 +128,7 @@ bool DeribitParser::parse_book(const char *channel, const rapidjson::Value &data
   }
 
   bool result = false;
-  std::string instrumnet(pos, next_poit - pos);
+  std::string_view instrumnet(pos, next_poit - pos);
   auto &book = books_[instrumnet];
   const int64_t change_id = data["change_id"].GetInt64();
 
@@ -181,7 +181,7 @@ bool DeribitParser::parse_book(const char *channel, const rapidjson::Value &data
   return result;
 }
 
-BookL2 const *DeribitParser::get_book(const std::string &instrument)
+BookL2 const *DeribitParser::get_book(const std::string_view &instrument)
 {
   BookL2 const *book = &books_[instrument];
   return book;

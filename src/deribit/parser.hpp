@@ -9,7 +9,7 @@
 // #include <map>
 #include "book_l2.hpp"
 #include <rapidjson/document.h>
-// #include <string_view>
+#include <string_view>
 
 namespace ssc2ce {
 
@@ -30,7 +30,7 @@ public:
     last_error_msg_.clear();
   }
 
-  BookL2 const *get_book(const std::string &instrument);
+  BookL2 const *get_book(const std::string_view &instrument);
 
 private:
   std::string last_error_msg_;
@@ -43,7 +43,7 @@ private:
 
   bool parse_book(const char *channel, const rapidjson::Value &data);
   //   using ParseChannel = std::function<bool(const char *)>;
-  std::map<std::string, DeribitBookL2> books_;
+  std::map<std::string_view, DeribitBookL2> books_;
 };
 
 } // namespace ssc2ce
