@@ -44,7 +44,7 @@ public:
 
 private:
   std::string last_error_msg_;
-
+  DeribitBookL2 &find_or_create_book(const std::string_view &instrument);
   bool parse_book(const char *channel, const rapidjson::Value &data);
   //   using ParseChannel = std::function<bool(const char *)>;
   std::map<std::string_view, DeribitBookL2> books_;
