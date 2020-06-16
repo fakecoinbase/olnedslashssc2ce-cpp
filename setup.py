@@ -80,7 +80,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='ssc2ce_cpp',
-    version='0.0.1',
+    version='0.0.2',
     author='Oleg Nedbaylo',
     author_email='olned64@gmail.com',
     description='A test project using pybind11 and CMake',
