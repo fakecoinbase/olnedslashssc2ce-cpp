@@ -21,6 +21,8 @@ bool DeribitParser::parse(const char *message)
     return false;
   }
 
+  last_error_msg_.clear();
+
   using namespace rapidjson;
   rapidjson::Document doc;
   doc.Parse(message);
@@ -186,16 +188,15 @@ bool DeribitParser::parse_book(const char *channel, const rapidjson::Value &data
   return result;
 }
 
-  DeribitBookL2 &DeribitParser::find_or_create_book(const std::string_view &instrumnet)
-   {
-    if (auto p = books_.find(instrumnet); p != books_.end()) {
-      return p->second;
-    } else {
-      auto [x, ok] = books_.emplace(instrumnet, DeribitBookL2(std::string(instrumnet)));
-      return x->second;
-    }
-  };
-
+DeribitBookL2 &DeribitParser::find_or_create_book(const std::string_view &instrumnet)
+{
+  if (auto p = books_.find(instrumnet); p != books_.end()) {
+    return p->second;
+  } else {
+    auto [x, ok] = books_.emplace(instrumnet, DeribitBookL2(std::string(instrumnet)));
+    return x->second;
+  }
+};
 
 BookL2 const *DeribitParser::get_book(const std::string_view &instrument)
 {
