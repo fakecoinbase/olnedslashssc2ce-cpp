@@ -13,6 +13,7 @@ class DeribitParser;
 
 class DeribitBookL2 : public BookL2Map {
 public:
+  DeribitBookL2(const std::string &instrument) : BookL2Map{instrument} {}
   int64_t get_last_change_id() const { return last_change_id_; }
   void set_last_change_id(int64_t change_id) { last_change_id_ = change_id ; }
 

@@ -10,8 +10,12 @@
 namespace ssc2ce {
 
 class BookL2 {
+  std::string instrument_;
+
 public:
+  BookL2(const std::string &instrument) : instrument_{instrument} {}
   virtual ~BookL2() {}
+  std::string instrument() const { return instrument_; }
 
   virtual double top_bid_price() const = 0;
   virtual double top_ask_price() const = 0;

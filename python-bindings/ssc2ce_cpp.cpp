@@ -22,9 +22,12 @@ PYBIND11_MODULE(ssc2ce_cpp, m)
 
   book.def("top_bid_price", &ssc2ce::BookL2::top_bid_price)
       .def("top_ask_price", &ssc2ce::BookL2::top_ask_price)
+      .def("instrument", &ssc2ce::BookL2::instrument)
       .def("__repr__",
            [](const ssc2ce::BookL2 &a) {
-             return "<ssc2ce.BookL2{" + std::to_string(a.top_bid_price()) + "..., " + std::to_string(a.top_ask_price()) + "...}>";
+             return "<ssc2ce.BookL2{" + a.instrument() +
+                    ", top_bid:" + std::to_string(a.top_bid_price()) +
+                    ", top_ask:" + std::to_string(a.top_ask_price()) + "}>";
            });
 
   py::class_<ssc2ce::DeribitParser>(m, "DeribitParser")

@@ -12,7 +12,7 @@ namespace ssc2ce {
 
 class BookL2Map : public BookL2 {
 public:
-  BookL2Map() : BookL2{} {}
+  BookL2Map(const std::string &instrument) : BookL2{instrument} {}
   double top_bid_price() const override { return bids_.empty() ? 0. : bids_.crbegin()->first; }
   double top_ask_price() const override { return asks_.empty() ? 0. : asks_.cbegin()->first; }
 
