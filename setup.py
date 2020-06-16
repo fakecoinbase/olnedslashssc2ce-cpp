@@ -80,10 +80,10 @@ with open("README.md", "r") as fh:
 
 setup(
     name='ssc2ce_cpp',
-    version='0.0.2',
+    version='0.1.0',
     author='Oleg Nedbaylo',
     author_email='olned64@gmail.com',
-    description='A test project using pybind11 and CMake',
+    description='A set of C++ parsers for ssc2ce',
     long_description=long_description,
     ext_modules=[CMakeExtension('ssc2ce_cpp')],
     cmdclass=dict(build_ext=CMakeBuild, bdist_wheel=bdist_wheel),
