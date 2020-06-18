@@ -190,10 +190,12 @@ bool DeribitParser::parse_book(const char *channel, const rapidjson::Value &data
 
 DeribitBookL2 &DeribitParser::find_or_create_book(const std::string_view &instrumnet)
 {
-  if (auto p = books_.find(instrumnet); p != books_.end()) {
+  const auto key = std::hash<std::string_view>{}(instrumnet);
+
+  if (auto p = books_.find(key); p != books_.end()) {
     return p->second;
   } else {
-    auto [x, ok] = books_.emplace(instrumnet, DeribitBookL2(std::string(instrumnet)));
+    auto [x, ok] = books_.emplace(key, DeribitBookL2(std::string(instrumnet)));
     return x->second;
   }
 };

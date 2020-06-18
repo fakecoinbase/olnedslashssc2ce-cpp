@@ -9,6 +9,7 @@
 #include <functional>
 #include <rapidjson/document.h>
 #include <string_view>
+#include <unordered_map>
 
 namespace ssc2ce {
 
@@ -46,8 +47,7 @@ private:
   std::string last_error_msg_;
   DeribitBookL2 &find_or_create_book(const std::string_view &instrument);
   bool parse_book(const char *channel, const rapidjson::Value &data);
-  //   using ParseChannel = std::function<bool(const char *)>;
-  std::map<std::string_view, DeribitBookL2> books_;
+  std::unordered_map<std::size_t, DeribitBookL2> books_;
   BookEvent on_book_setup_;
   BookEvent on_book_update_;
 };
