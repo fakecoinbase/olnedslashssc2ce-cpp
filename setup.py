@@ -80,7 +80,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='ssc2ce_cpp',
-    version='0.1.0',
+    version='0.2.0',
     author='Oleg Nedbaylo',
     author_email='olned64@gmail.com',
     description='A set of C++ parsers for ssc2ce',
@@ -88,5 +88,6 @@ setup(
     ext_modules=[CMakeExtension('ssc2ce_cpp')],
     cmdclass=dict(build_ext=CMakeBuild, bdist_wheel=bdist_wheel),
     test_suite='tests',
+    # tests_require=['pytest'],
     zip_safe=False,
 )

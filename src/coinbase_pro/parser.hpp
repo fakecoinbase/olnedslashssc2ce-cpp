@@ -13,11 +13,11 @@
 
 namespace ssc2ce {
 
-class DeribitParser : public Parser {
+class CoinbaseParser : public Parser {
 public:
   using BookEvent = std::function<void(BookL2 *)>;
-  DeribitParser();
-  ~DeribitParser() {}
+  CoinbaseParser();
+  ~CoinbaseParser() {}
 
   bool parse(const char *message) override;
 
@@ -45,11 +45,15 @@ public:
 
 private:
   std::string last_error_msg_;
-  DeribitBookL2 &find_or_create_book(const std::string_view &instrument);
-  bool parse_book(const char *channel, const rapidjson::Value &data);
-  std::unordered_map<std::size_t, DeribitBookL2> books_;
+
   BookEvent on_book_setup_;
   BookEvent on_book_update_;
+
+  std::unordered_map<std::size_t, CoinbaseBookL2> books_;
+  CoinbaseBookL2 &find_or_create_book(const std::string_view &instrument);
+
+  bool handle_snapshot(const rapidjson::Value &data);
+  bool handle_l2update(const rapidjson::Value &data);
 };
 
 } // namespace ssc2ce

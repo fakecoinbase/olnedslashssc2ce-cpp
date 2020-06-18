@@ -5,6 +5,7 @@
 
 #include "py_book.hpp"
 #include <deribit/parser.hpp>
+#include <coinbase_pro/parser.hpp>
 #include <pybind11/functional.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -43,6 +44,15 @@ PYBIND11_MODULE(ssc2ce_cpp, m)
       .def("set_on_book_setup", &ssc2ce::DeribitParser::set_on_book_setup)
       .def("set_on_book_update", &ssc2ce::DeribitParser::set_on_book_update)
       .def("parse", &ssc2ce::DeribitParser::parse);
+
+  py::class_<ssc2ce::CoinbaseParser>(m, "CoinbaseParser")
+    .def(py::init<>())
+    .def("get_book",
+          &ssc2ce::CoinbaseParser::get_book,
+          py::return_value_policy::reference_internal)
+    .def("set_on_book_setup", &ssc2ce::CoinbaseParser::set_on_book_setup)
+    .def("set_on_book_update", &ssc2ce::CoinbaseParser::set_on_book_update)
+    .def("parse", &ssc2ce::CoinbaseParser::parse);
 
 #ifdef VERSION_INFO
   m.attr("__version__") = VERSION_INFO;

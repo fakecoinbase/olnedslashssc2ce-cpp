@@ -10,7 +10,7 @@ import ssc2ce_cpp as m
 class DeribitParser(TestCase):
     def setUp(self):
         self.parser = m.DeribitParser()
-        
+
         self.top_prices = {}
         self.top_bid = 0
         self.top_ask = 0
@@ -44,7 +44,7 @@ class DeribitParser(TestCase):
             '"bids":[["new",235.3,26441.0],["new",235.25,5882.0],["new",235.2,15126.0]],' \
             '"asks":[["new",235.4,2120.0],["new",235.45,15892.0],["new",235.5,34249.0]]}}}'
         self.assertEqual(self.parser.parse(book_snapshot), True)
-        
+
         book = self.parser.get_book("ETH-PERPETUAL")
         self.assertEqual(book.top_bid_price(), 235.3)
         self.assertEqual(book.top_ask_price(), 235.4)
@@ -61,7 +61,6 @@ class DeribitParser(TestCase):
             '"bids":[["new",235.3,26441.0],["new",235.25,5882.0],["new",235.2,15126.0]],' \
             '"asks":[["new",235.4,2120.0],["new",235.45,15892.0],["new",235.5,34249.0]]}}}'
         self.assertEqual(self.parser.parse(book_snapshot), True)
-
 
         book_update = '{"jsonrpc":"2.0","method":"subscription","params":{"channel":"book.ETH-PERPETUAL.raw",' \
             '"data":{"timestamp":1592049685338,"prev_change_id":600242265,"instrument_name":"ETH-PERPETUAL","change_id":600242267,' \
