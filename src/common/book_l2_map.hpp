@@ -15,6 +15,7 @@ public:
   BookL2Map(const std::string &instrument) : BookL2{instrument} {}
   double top_bid_price() const override { return bids_.empty() ? 0. : bids_.crbegin()->first; }
   double top_ask_price() const override { return asks_.empty() ? 0. : asks_.cbegin()->first; }
+  bool valid() const override { return !asks_.empty() && !bids_.empty(); }
 
   void add_ask(double price, double size)
   {
