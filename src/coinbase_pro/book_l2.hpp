@@ -1,4 +1,4 @@
-// src/coinbase/book_l2.hpp
+// src/coinbase_pro/book_l2.hpp
 // Copyright Oleg Nedbaylo 2020.
 // Distributed under the Boost Software License, Version 1.0.
 // See accompanying file LICENSE
