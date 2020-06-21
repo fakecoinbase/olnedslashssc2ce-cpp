@@ -20,8 +20,6 @@ class TestCoinbaseParser(TestCase):
         self.parser.set_on_book_update(self.handle_book_update)
 
     def handle_book_setup(self, book):
-        print("handle_book_setup", book.top_ask_price(), book.top_bid_price())
-
         if book.instrument() in self.top_prices:
             top = self.top_prices[book.instrument()]
             top["bid"] = book.top_bid_price()
@@ -35,8 +33,6 @@ class TestCoinbaseParser(TestCase):
         self.book_setup_count += 1
 
     def handle_book_update(self, book):
-        print("handle_book_update", book.top_ask_price(), book.top_bid_price())
-
         top = self.top_prices[book.instrument()]
         top["bid"] = book.top_bid_price()
         top["ask"] = book.top_ask_price()
