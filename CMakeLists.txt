@@ -10,8 +10,8 @@ enable_testing()
 add_definitions(-DFMT_HEADER_ONLY)
 
 SET(SYSTEM PYBIND11_PYTHON_VERSION 3.8)
-include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/libs/include)
-include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/src)
+include_directories(SYSTEM libs/include)
+include_directories(SYSTEM src)
 
 
 add_subdirectory(src)
