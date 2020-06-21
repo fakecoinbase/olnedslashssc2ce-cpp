@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15.0)
-SET(PROJECT_VER "0.0.1")
+SET(PROJECT_VER "0.3.0")
 project(ssc2ce-cpp VERSION ${PROJECT_VER} DESCRIPTION "set of C++ classes for ssc3ce")
 
 set(CMAKE_CXX_STANDARD 17)

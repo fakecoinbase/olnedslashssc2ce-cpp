@@ -12,10 +12,10 @@
 
 namespace ssc2ce {
 
-class DeribitParser : public Parser {
+class CexParser : public Parser {
 public:
-  DeribitParser();
-  ~DeribitParser() {}
+  CexParser();
+  ~CexParser() {}
 
   bool parse(const char *message) override;
 
@@ -33,9 +33,10 @@ public:
 
 private:
   std::string last_error_msg_;
-  DeribitBookL2 &find_or_create_book(const std::string_view &instrument);
-  bool parse_book(const char *channel, const rapidjson::Value &data);
-  std::unordered_map<std::size_t, DeribitBookL2> books_;
+  CexBookL2 &find_or_create_book(const std::string_view &instrument);
+  bool parse_book_update(const rapidjson::Value &);
+  bool parse_book_setup(const rapidjson::Value &);
+  std::unordered_map<std::size_t, CexBookL2> books_;
 };
 
 } // namespace ssc2ce

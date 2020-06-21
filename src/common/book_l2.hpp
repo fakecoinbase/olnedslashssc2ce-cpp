@@ -22,6 +22,7 @@ public:
 
   virtual double top_bid_price() const = 0;
   virtual double top_ask_price() const = 0;
+  virtual bool valid() const = 0;
 };
 
 } // namespace ssc2ce

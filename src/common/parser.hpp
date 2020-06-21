@@ -4,16 +4,35 @@
 // or copy at http://www.boost.org/LICENSE_1_0.txt
 
 #pragma once
+#include "book_l2.hpp"
+#include <functional>
+#include <string_view>
 
-namespace ssc2ce
-{
+namespace ssc2ce {
 
-class Parser{
-    public:
-    virtual ~Parser() {}
+class Parser {
+public:
+  using BookEvent = std::function<void(BookL2 *)>;
 
-    virtual bool parse(const char *message) = 0;
+  virtual ~Parser() {}
+
+  virtual bool parse(const char *message) = 0;
+  virtual BookL2 const *get_book(const std::string_view &instrument) = 0;
+
+  void set_on_book_setup(BookEvent handler)
+  {
+    on_book_setup_ = handler;
+  }
+
+  void set_on_book_update(BookEvent handler)
+  {
+    on_book_update_ = handler;
+  }
+
+
+protected:
+  BookEvent on_book_setup_;
+  BookEvent on_book_update_;
 };
 
-   
 } // namespace ssc2ce

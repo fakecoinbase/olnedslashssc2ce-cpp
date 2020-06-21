@@ -80,7 +80,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='ssc2ce_cpp',
-    version='0.2.0',
+    version='0.3.0',
     author='Oleg Nedbaylo',
     author_email='olned64@gmail.com',
     description='A set of C++ parsers for ssc2ce',
