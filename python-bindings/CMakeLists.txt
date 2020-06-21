@@ -1,7 +1,7 @@
 pybind11_add_module( 
     ssc2ce_cpp 
     ssc2ce_cpp.cpp 
-    ${CMAKE_SOURCE_DIR}/src/cex/parser.cpp
-    ${CMAKE_SOURCE_DIR}/src/coinbase_pro/parser.cpp
-    ${CMAKE_SOURCE_DIR}/src/deribit/parser.cpp
+    ../src/cex/parser.cpp
+    ../src/coinbase_pro/parser.cpp
+    ../src/deribit/parser.cpp
 )
